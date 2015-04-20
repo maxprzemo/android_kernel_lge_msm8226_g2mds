@@ -1933,12 +1933,12 @@ config MSM_CPU_FREQ_SET_MIN_MAX
 config MSM_CPU_FREQ_MAX
 	int "Max CPU Frequency"
 	depends on MSM_CPU_FREQ_SET_MIN_MAX
-	default 1593600
+	default 1190400
 
 config MSM_CPU_FREQ_MIN
 	int "Min CPU Frequency"
 	depends on MSM_CPU_FREQ_SET_MIN_MAX
-	default 245760
+	default 300000
 
 endif # CPU_FREQ_MSM
 
@@ -2522,6 +2522,13 @@ config MSM_DLOAD_MODE
 		due to a kernel panic. Note that this doesn't by itself
 		make the kernel reboot on a kernel panic - that must be
 		enabled via another mechanism.
+
+config FORCE_FAST_CHARGE
+	bool "Force AC charge mode at will"
+	default y
+	help
+		A simple sysfs interface to force adapters that
+		are detected as USB to charge as AC.
 
 config MSM_JTAG
 	bool "Debug and ETM trace support across power collapse"
