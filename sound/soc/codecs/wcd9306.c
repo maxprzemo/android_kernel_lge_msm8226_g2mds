@@ -6023,7 +6023,7 @@ static bool tapan_check_wcd9306(struct device *cdc_dev, bool sensed)
 
 #ifdef CONFIG_SOUND_CONTROL_HAX_GPL
 struct snd_kcontrol_new *gpl_faux_snd_controls_ptr =
-			(struct snd_kcontrol_new *)tapan_snd_controls;
+			(struct snd_kcontrol_new *)tapan_common_snd_controls;
 struct snd_soc_codec *fauxsound_codec_ptr;
 EXPORT_SYMBOL(fauxsound_codec_ptr);
 #endif
