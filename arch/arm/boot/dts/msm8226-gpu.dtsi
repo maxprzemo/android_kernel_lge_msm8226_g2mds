@@ -22,7 +22,7 @@
 
 		qcom,chipid = <0x03000510>;
 
-		qcom,initial-pwrlevel = <2>;
+		qcom,initial-pwrlevel = <0>;
 
 		qcom,idle-timeout = <8>; //<HZ/12>
 		qcom,strtstp-sleepwake;
@@ -38,7 +38,7 @@
 			<26 512 800000 1600000>, <89 604 0 3200000>,
 			<26 512 1600000 3200000>, <89 604 0 5120000>,
 			<26 512 2128000 4256000>, <89 604 0 6400000>,
-			<26 512 2128000 4256000>, <89 604 0 6600000>;
+			<26 512 2400000 4800000>, <89 604 0 6800000>;
 
 
 		/* GDSC oxili regulators */
@@ -134,7 +134,7 @@
 			qcom,energy-leakage-coeff-d = <0>;
 
 			qcom,power-current-temp = <25>;
-			qcom,power-num-freq = <5>;
+			qcom,power-num-freq = <6>;
 
 			qcom,dcvs-freq@0 {
 				reg = <0>;
