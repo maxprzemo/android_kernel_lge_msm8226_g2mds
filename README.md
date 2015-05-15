@@ -1,1 +1,1 @@
-kernel_lge_msm8226_g2m
+Extended kernel for CyanogenMod 12.x ROMs for LGE D618 device.
