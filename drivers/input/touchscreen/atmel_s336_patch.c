@@ -426,7 +426,7 @@ static void mxt_patch_load_t71data(struct mxt_data *data)
 
 const char* mxt_patch_src_item_name(u8 src_id)
 {
-	const char* src_item_name[11] = {
+	const char* src_item_name[MXT_PATCH_MAX_TYPE] = {
 		MXT_XML_SRC_NONE,	//MXT_PATCH_ITEM_NONE		0
 		MXT_XML_SRC_CHRG,	//MXT_PATCH_ITEM_CHARGER	1
 		MXT_XML_SRC_FCNT,	//MXT_PATCH_ITEM_FINGER_CNT	2
@@ -438,11 +438,11 @@ const char* mxt_patch_src_item_name(u8 src_id)
 		MXT_XML_SRC_KCNT,	//MXT_PATCH_ITEM_KCNT		8
 		MXT_XML_SRC_KVAL,	//MXT_PATCH_ITEM_KVAL		9
 		MXT_XML_SRC_T9STATUS,	//MXT_PATCH_ITEM_T9STATUS	10
-	//	MXT_XML_SRC_USER1,
-	//	MXT_XML_SRC_USER2,
-	//	MXT_XML_SRC_USER3,
-	//	MXT_XML_SRC_USER4,
-	//	MXT_XML_SRC_USER5,
+		MXT_XML_SRC_USER1,
+		MXT_XML_SRC_USER2,
+		MXT_XML_SRC_USER3,
+		MXT_XML_SRC_USER4,
+		MXT_XML_SRC_USER5,
 	};
 
 	if (MXT_PATCH_ITEM_NONE <= src_id && src_id < MXT_PATCH_ITEM_END) {
@@ -1272,26 +1272,24 @@ static u8 check_pattern_tracking_condition(struct mxt_data *data, struct test_sr
 	return rtn;
 }
 
-extern unsigned char touched_finger_count;
-
 static void mxt_patch_T57_object(struct mxt_data *data, struct mxt_message *message)
 {
 	struct test_src tsrc = {0};
 	u8 *msg = message->message;
-	//u8 finger_cnt = 0;
+	u8 finger_cnt = 0;
 	int i = 0;
 
 	mxt_patch_init_tsrc(&tsrc);
-#if 0
+
 	for (i = 0; i < MXT_MAX_FINGER; i++) {
 		if ((data->fingers[i].state != MXT_STATE_INACTIVE) && (data->fingers[i].state != MXT_STATE_RELEASE))
 			finger_cnt++;
 	}
-#endif
+
 #if 0 //TSP_INFORM_CHARGER
 	tsrc.charger = data->charging_mode;
 #endif
-	tsrc.finger_cnt = touched_finger_count;
+	tsrc.finger_cnt = finger_cnt;
 
 	tsrc.sum_size = msg[0] | (msg[1] << 8);
 	tsrc.tch_ch = msg[2] | (msg[3] << 8);
@@ -1301,7 +1299,7 @@ static void mxt_patch_T57_object(struct mxt_data *data, struct mxt_message *mess
 	tsrc.amp = data->patch.src_item[MXT_PATCH_ITEM_AMP];
 
 	if (data->patch.start) {
-		if ((data->patch.option & 0x01)== 0x01 && !tsrc.finger_cnt)
+		if ((data->patch.option & 0x01)== 0x01 && !finger_cnt)
 			return;
 
 		mxt_patch_make_source(data, &tsrc);
@@ -1309,16 +1307,16 @@ static void mxt_patch_T57_object(struct mxt_data *data, struct mxt_message *mess
 	}
 
 	if ((data->patch.cur_stage_opt & 0x01) && check_pattern_tracking_condition(data, &tsrc, &tpos_data)) {
-		if (tsrc.finger_cnt) {
+		if (finger_cnt) {
 			for (i = 0; i < MXT_MAX_FINGER; i++) {
 				if ((data->fingers[i].state != MXT_STATE_INACTIVE) && (data->fingers[i].state != MXT_STATE_RELEASE)) {
-					mxt_patch_check_pattern(data, &tpos_data, i, data->fingers[i].x, data->fingers[i].y, tsrc.finger_cnt);
+					mxt_patch_check_pattern(data, &tpos_data, i, data->fingers[i].x, data->fingers[i].y, finger_cnt);
 				}
 			}
 		}
 	}
 
-	if (tsrc.finger_cnt == 0) {
+	if (finger_cnt == 0) {
 		mxt_patch_init_tpos(data, &tpos_data);
 	}
 

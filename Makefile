@@ -192,6 +192,7 @@ SUBARCH := $(shell uname -m | sed -e s/i.86/i386/ -e s/sun4u/sparc64/ \
 # Default value for CROSS_COMPILE is not to prefix executables
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
 export KBUILD_BUILDHOST := $(SUBARCH)
+CROSS_COMPILE   := /home/nikita/arm_cortex-a7_linaro-4.9.3/bin/arm-cortex_a7-linux-gnueabihf-
 ARCH            := arm
 SUBARCH         := arm
 ARCH		?= $(SUBARCH)
