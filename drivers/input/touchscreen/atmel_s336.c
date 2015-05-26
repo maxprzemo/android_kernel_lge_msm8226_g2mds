@@ -34,6 +34,8 @@
 #include <linux/time.h>
 #include <linux/file.h>
 #include <linux/syscalls.h>
+#include <linux/input.h>
+#include <linux/input/mt.h>
 #include <linux/async.h>
 #include "atmel_s336.h"
 #include "atmel_s336_patch.h"
@@ -2039,6 +2041,8 @@ static void mxt_proc_t93_messages(struct mxt_data *data, u8 *message)
 {
 	u8 msg = 0;
 
+	struct input_dev *input_dev = data->input_dev;
+
 	if (data->in_bootloader)
 		return;
 
@@ -2057,6 +2061,9 @@ static void mxt_proc_t93_messages(struct mxt_data *data, u8 *message)
 				hrtimer_start(&data->multi_tap_timer, ktime_set(0, MS_TO_NS(MXT_WAITED_UDF_TIME)), HRTIMER_MODE_REL);
 		} else if (data->lpwg_mode == LPWG_DOUBLE_TAP) {
 			send_uevent(knockon_event);
+			input_report_key(input_dev, KEY_DOUBLE_TAP, 1);
+			input_report_key(input_dev, KEY_DOUBLE_TAP, 0);
+			input_sync(input_dev);
 		}
 	}
 }
@@ -5452,6 +5459,8 @@ int mxt_initialize_t9_input_device(struct mxt_data *data)
 			input_set_capability(input_dev, EV_KEY, data->pdata->t15_keymap[i]);
 			input_dev->keybit[BIT_WORD(data->pdata->t15_keymap[i])] |= BIT_MASK(data->pdata->t15_keymap[i]);
 	}
+	set_bit(EV_KEY, input_dev->evbit);
+	set_bit(KEY_DOUBLE_TAP, input_dev->keybit);
 
 	input_set_drvdata(input_dev, data);
 
