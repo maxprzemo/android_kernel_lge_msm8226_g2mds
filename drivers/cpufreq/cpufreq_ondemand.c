@@ -159,6 +159,10 @@ static struct dbs_tuners {
 	.input_boost = 0,
 };
 
+#ifdef CONFIG_MACH_MSM8X10_L70P /* Boost Cpu when wake up */
+extern int boost_freq;
+#endif
+
 static inline cputime64_t get_cpu_iowait_time(unsigned int cpu, cputime64_t *wall)
 {
 	u64 iowait_time = get_cpu_iowait_time_us(cpu, wall);
