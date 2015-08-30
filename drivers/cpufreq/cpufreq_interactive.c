@@ -198,12 +198,8 @@ static void cpufreq_interactive_timer_start(int cpu, int time_override)
 
 	spin_lock_irqsave(&pcpu->load_lock, flags);
 	pcpu->time_in_idle =
-<<<<<<< HEAD
-		get_cpu_idle_time(cpu, &pcpu->time_in_idle_timestamp, io_is_busy);
-=======
 		get_cpu_idle_time(cpu, &pcpu->time_in_idle_timestamp,
 				  io_is_busy);
->>>>>>> 6b4733c... CPU_idle_time...
 	pcpu->cputime_speedadj = 0;
 	pcpu->cputime_speedadj_timestamp = pcpu->time_in_idle_timestamp;
 	spin_unlock_irqrestore(&pcpu->load_lock, flags);
