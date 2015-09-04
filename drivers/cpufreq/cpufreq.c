@@ -162,7 +162,7 @@ static inline u64 get_cpu_idle_time_jiffy(unsigned int cpu, u64 *wall)
 
 	idle_time = cur_wall_time - busy_time;
 	if (wall)
-		*wall = cputime_to_usecs(cur_wall_time);
+	*wall = cputime_to_usecs(cur_wall_time);
 
 	return cputime_to_usecs(idle_time);
 }
