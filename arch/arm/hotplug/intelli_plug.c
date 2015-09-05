@@ -33,7 +33,6 @@
 //#define DEBUG_INTELLI_PLUG
 #undef DEBUG_INTELLI_PLUG
 
-<<<<<<< HEAD
 #define INTELLI_PLUG_MAJOR_VERSION	4
 #define INTELLI_PLUG_MINOR_VERSION	0
 
@@ -394,7 +393,6 @@ void __ref intelli_plug_perf_boost(bool on)
 	}
 }
 
-<<<<<<< HEAD
 /* sysfs interface for performance boost (BEGIN) */
 static ssize_t intelli_plug_perf_boost_store(struct kobject *kobj,
 			struct kobj_attribute *attr, const char *buf,
